@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/hexcode" />
 
     <ImageView
-        android:id="@+id/Menu"
+        android:id="@+id/Menucolpick"
         android:layout_width="27dp"
         android:layout_height="25dp"
         android:layout_marginTop="16dp"

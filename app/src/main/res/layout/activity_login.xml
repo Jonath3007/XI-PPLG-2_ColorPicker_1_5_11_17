@@ -59,7 +59,7 @@
         app:srcCompat="@drawable/hexcode" />
 
     <ImageView
-        android:id="@+id/Menu"
+        android:id="@+id/Menucolpick"
         android:layout_width="27dp"
         android:layout_height="25dp"
         android:layout_marginTop="16dp"
@@ -67,7 +67,7 @@
         app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/convert" />
+        app:srcCompat="@drawable/menu" />
 
     <TextView
         android:id="@+id/textView4"

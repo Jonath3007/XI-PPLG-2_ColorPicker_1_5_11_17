@@ -47,5 +47,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val menuImageView = findViewById<ImageView>(R.id.Menucolpick)
+        menuImageView.setOnClickListener {
+            val intent = Intent(this@MainActivity, ConvertCode::class.java)
+            startActivity(intent)
+        }
     }
 }

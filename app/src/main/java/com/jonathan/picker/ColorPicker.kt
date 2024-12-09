@@ -1,18 +1,16 @@
 package com.jonathan.picker
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.app.Activity
-import android.content.ContentResolver
 import android.provider.MediaStore
 import android.content.Intent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,10 +21,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 
 class ColorPicker : AppCompatActivity() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -96,6 +94,11 @@ class ColorPicker : AppCompatActivity() {
         }
         button8.setOnClickListener{
             startActivity(Intent(this, ColorLevel::class.java))
+        }
+        val menuImageView = findViewById<ImageView>(R.id.Menucolpick)
+        menuImageView.setOnClickListener {
+            val intent = Intent(this@ColorPicker, ConvertCode::class.java)
+            startActivity(intent)
         }
     }
     private fun copyToClipboard(label: String, text: String) {

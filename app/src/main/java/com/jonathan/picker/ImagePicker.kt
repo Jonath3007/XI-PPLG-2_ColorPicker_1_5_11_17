@@ -1,5 +1,6 @@
 package com.jonathan.picker
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -95,6 +96,11 @@ class ImagePicker : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val imageUri: Uri? = result.data?.data
             imageUri?.let { updateImageUri(it) }
+        }
+        val menuImageView = findViewById<ImageView>(R.id.Menupicker)
+        menuImageView.setOnClickListener {
+            val intent = Intent(this@ImagePicker, ConvertCode::class.java)
+            startActivity(intent)
         }
     }
 }

@@ -46,6 +46,12 @@ class FavColor : AppCompatActivity() {
         setupColorWheel(colorWheelView)
         setupButtons(saveButton, buttonFirst, buttonThird)
         adjustForSystemBars()
+
+        val menuImageView = findViewById<ImageView>(R.id.Menufav)
+        menuImageView.setOnClickListener {
+            val intent = Intent(this@FavColor, ConvertCode::class.java)
+            startActivity(intent)
+        }
     }
     private fun setupColorWheel(colorWheelView: ImageView) {
         colorWheelView.setOnTouchListener {_, event ->

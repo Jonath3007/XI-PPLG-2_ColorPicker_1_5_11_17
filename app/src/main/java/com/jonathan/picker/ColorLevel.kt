@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.graphics.Color
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 
 class ColorLevel : AppCompatActivity() {
@@ -53,6 +54,12 @@ class ColorLevel : AppCompatActivity() {
         createGradient(colorLevelContainer1, baseColor1, colorSteps)
         createGradient(colorLevelContainer2, baseColor2, colorSteps)
         createGradient(colorLevelContainer3, baseColor3, colorSteps)
+
+        val menuImageView = findViewById<ImageView>(R.id.Menucolor)
+        menuImageView.setOnClickListener {
+            val intent = Intent(this@ColorLevel, ConvertCode::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun createGradient(container: LinearLayout, baseColor: Int, colorSteps: Int) {

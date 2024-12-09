@@ -7,4 +7,214 @@
     android:layout_height="match_parent"
     tools:context=".ConvertCode">
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="382dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/bgmenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/buttonsecond"
+        android:layout_width="81dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/bgmenu"
+        android:elevation="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Fav Color"
+        android:textAllCaps="false"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.354"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonfirst"
+        android:layout_width="82dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/bgmenu"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Color Picker"
+        android:textAllCaps="false"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.082"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonthirdly"
+        android:layout_width="84dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/bgmenu"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Color Level"
+        android:textAllCaps="false"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.626"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonfourth"
+        android:layout_width="84dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/apkaktif"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Convert Color"
+        android:textAllCaps="false"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.914"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_width="85dp"
+        android:layout_height="53dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/hexcode" />
+
+    <ImageView
+        android:id="@+id/Menubiasa"
+        android:layout_width="27dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/menu" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bgconvert"
+        android:layout_width="371dp"
+        android:layout_height="347dp"
+        android:background="@drawable/bgconverter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.353">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="140dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/grouprgb" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="140dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="172dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/groupcmyk" />
+
+        <EditText
+            android:id="@+id/rgbcode"
+            android:layout_width="207dp"
+            android:layout_height="34dp"
+            android:background="@drawable/logincs"
+            android:ems="10"
+            android:inputType="text"
+            android:text="   Enter your RGB code"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.306" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bgcmyk"
+            android:layout_width="208dp"
+            android:layout_height="33dp"
+            android:layout_marginBottom="72dp"
+            android:background="@drawable/logincs"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/textcmyk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="5dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/convert"
+            android:layout_width="87dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="16dp"
+            android:background="#FF9D00"
+            android:fontFamily="@font/poppins_bold"
+            android:text="CONVERT"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.951"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="87dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="16dp"
+            android:background="#888888"
+            android:fontFamily="@font/poppins_bold"
+            android:text="RESET"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/previewconvert"
+        android:layout_width="203dp"
+        android:layout_height="162dp"
+        android:background="@drawable/logincs"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.922">
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
