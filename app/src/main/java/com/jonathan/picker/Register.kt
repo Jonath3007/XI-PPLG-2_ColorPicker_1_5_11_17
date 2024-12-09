@@ -9,11 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 
 class Register : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var buttonmove: Button
@@ -21,11 +18,9 @@ class Register : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContentView(R.layout.activity_register)
 
-        auth = FirebaseAuth.getInstance()
         emailInput = findViewById(R.id.usernamereg)
         passwordInput = findViewById(R.id.passwordreg)
         buttonmove = findViewById(R.id.buttonmove)
@@ -53,16 +48,15 @@ class Register : AppCompatActivity() {
             showToast("Please fill in both of them")
             return
         }
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    showToast("Registration Successful")
-                    startActivity(Intent(this, Login::class.java))
-                    finish()
-                } else {
-                    showToast("Registration Failed: ${task.exception?.message}")
-                }
-            }
+       val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("user_email", email)
+        editor.putString("user_password", password)
+        editor.apply()
+
+        showToast("Registration Successful")
+        startActivity(Intent(this, Login::class.java))
+        finish()
     }
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

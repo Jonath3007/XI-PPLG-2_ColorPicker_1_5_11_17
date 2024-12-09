@@ -44,8 +44,6 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.runtime)
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    implementation(libs.firebase.auth.ktx)
     kapt(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)

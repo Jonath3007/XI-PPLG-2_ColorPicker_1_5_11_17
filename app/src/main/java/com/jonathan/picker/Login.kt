@@ -9,11 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.auth.FirebaseAuth
 
 class Login : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
     private lateinit var  continueButton: Button
@@ -23,7 +21,6 @@ class Login : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
         emailInput = findViewById(R.id.username)
         passwordInput = findViewById(R.id.password)
         continueButton = findViewById(R.id.buttoncontinue)
@@ -46,16 +43,17 @@ class Login : AppCompatActivity() {
             return
         }
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if(task.isSuccessful) {
-                    showToast("Login Successful")
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    showToast("Login Failed: ${task.exception?.message}")
-                }
-            }
+       val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val savedEmail = sharedPreferences.getString("user_email", null)
+        val savedPassword = sharedPreferences.getString("user_password", null)
+
+        if (email == savedEmail && password == savedPassword){
+            showToast("Login Successful")
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        } else {
+            showToast("Login Failed")
+        }
     }
 
     private fun showToast(message: String) {
