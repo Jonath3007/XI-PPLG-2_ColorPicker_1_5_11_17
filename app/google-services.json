@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "277791530165",
+    "project_id": "anoj-509c2",
+    "storage_bucket": "anoj-509c2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277791530165:android:61ff07b971bc1be6a132fc",
+        "android_client_info": {
+          "package_name": "com.jonathan.picker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBijV3qXLnqLMMkfF9awNUQCkt_ETLCWxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
