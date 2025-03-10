@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "505264327857",
+    "project_id": "colorpicker-62082",
+    "storage_bucket": "colorpicker-62082.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505264327857:android:cb33a229e20b0ebf7f6690",
+        "android_client_info": {
+          "package_name": "com.jonathan.picker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcF8Ce2BDWgfrV2JjZKR4epE6LSUgfaiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

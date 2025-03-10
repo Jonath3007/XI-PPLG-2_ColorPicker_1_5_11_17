@@ -35,9 +35,14 @@ class ImagePicker : AppCompatActivity() {
 
         imageView.scaleType = ScaleType.FIT_CENTER
 
-        imageView.post {
-            imageUri?.let { updateImageUri(it) }
+        val receivedUri = intent.data
+        val extraUri = intent.getParcelableExtra<Uri>("imageUri")
+
+        when {
+            receivedUri != null -> updateImageUri(receivedUri)
+            extraUri != null -> updateImageUri(extraUri)
         }
+
         imageView.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
@@ -74,7 +79,11 @@ class ImagePicker : AppCompatActivity() {
                 else -> false
             }
         }
-
+        val menuImageView = findViewById<ImageView>(R.id.Menupicker)
+        menuImageView.setOnClickListener {
+            val intent = Intent(this@ImagePicker, ConvertCode::class.java)
+            startActivity(intent)
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -85,6 +94,7 @@ class ImagePicker : AppCompatActivity() {
         imageUri = uri
         val imageView: ImageView = findViewById(R.id.imageView3)
         imageView.setImageURI(uri)
+
         imageView.post {
             val drawable = imageView.drawable
             if (drawable is BitmapDrawable) {
@@ -96,11 +106,6 @@ class ImagePicker : AppCompatActivity() {
         if (result.resultCode == RESULT_OK) {
             val imageUri: Uri? = result.data?.data
             imageUri?.let { updateImageUri(it) }
-        }
-        val menuImageView = findViewById<ImageView>(R.id.Menupicker)
-        menuImageView.setOnClickListener {
-            val intent = Intent(this@ImagePicker, ConvertCode::class.java)
-            startActivity(intent)
         }
     }
 }

@@ -193,7 +193,7 @@
         app:layout_constraintHorizontal_bias="0.44"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33"
+        app:layout_constraintVertical_bias="0.335"
         app:srcCompat="@drawable/example" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -24,6 +25,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 
 class ColorPicker : AppCompatActivity() {
 
+    private var selectedImageUri: Uri? = null
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,25 +42,35 @@ class ColorPicker : AppCompatActivity() {
         val button7 = findViewById<Button>(R.id.buttonfavcolor)
         val button8 = findViewById<Button>(R.id.buttoncolorlevel)
 
-        var selectedImageUri: Uri? = null
-
         val pickImageLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val data: Intent? = result.data
                     selectedImageUri = data?.data
 
-                    imageView1.setImageURI(selectedImageUri)
+                    selectedImageUri?.let { uri ->
+                        imageView1.setImageURI(uri)
 
                     val intent = Intent(this, ImagePicker::class.java)
-                    intent.data = selectedImageUri
+                    intent.setData(uri)
                     startActivity(intent)
                 }
             }
+            }
+        imageView1.post{
+            val drawable = imageView1.drawable
+            if (drawable is BitmapDrawable) {
+                val bitmap = drawable.bitmap
 
         imageView1.setOnTouchListener { v, event ->
-            val x = event.x.toInt()
-            val y = event.y.toInt()
+            val viewWidth = v.width.toFloat()
+            val viewHeight = v.height.toFloat()
+
+            val relativeX = event.x / viewWidth
+            val relativeY = event.y / viewHeight
+
+            val x = (relativeX * bitmap.width).toInt()
+            val y = (relativeY * bitmap.height).toInt()
 
             if (x >= 0 && x < bitmap.width && y >= 0 && y < bitmap.height) {
                 val pixelColor = bitmap.getPixel(x, y)
@@ -70,8 +83,10 @@ class ColorPicker : AppCompatActivity() {
                 textView11.text = "HEX: $hexCode"
 
                 frameLayout.setBackgroundColor(Color.rgb(red, green, blue))
-            }
+                    }
             true
+                 }
+            }
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
