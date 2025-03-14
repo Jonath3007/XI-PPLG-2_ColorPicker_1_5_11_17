@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.Button
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 
 class ColorPicker : AppCompatActivity() {
@@ -34,7 +35,7 @@ class ColorPicker : AppCompatActivity() {
         setContentView(R.layout.activity_colorpicker)
 
         val imageView1 = findViewById<ImageView>(R.id.imageView1)
-        val textView10 = findViewById<TextView>(R.id.textView10)
+        val textView10 = findViewById<TextView>(R.id.textView10_)
         val textView11 = findViewById<TextView>(R.id.textView11)
         val bitmap = (imageView1.drawable as BitmapDrawable).bitmap
         val frameLayout = findViewById<FrameLayout>(R.id.framePreview)
@@ -49,43 +50,52 @@ class ColorPicker : AppCompatActivity() {
                     selectedImageUri = data?.data
 
                     selectedImageUri?.let { uri ->
-                        imageView1.setImageURI(uri)
+                        try {
+                            Log.d("ColorPicker", "Image selected: $uri")
+                            // Set di ColorPicker dulu
+                            imageView1.setImageURI(uri)
 
-                    val intent = Intent(this, ImagePicker::class.java)
-                    intent.setData(uri)
-                    startActivity(intent)
+                            // Kirim ke ImagePicker dengan Extra
+                            val intent = Intent(this, ImagePicker::class.java)
+                            intent.putExtra("imageUri", uri)
+                            startActivity(intent)
+                        } catch (e: Exception) {
+                            Log.e("ColorPicker", "Error loading image: ${e.message}")
+                            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
-            }
+
         imageView1.post{
             val drawable = imageView1.drawable
             if (drawable is BitmapDrawable) {
                 val bitmap = drawable.bitmap
 
-        imageView1.setOnTouchListener { v, event ->
-            val viewWidth = v.width.toFloat()
-            val viewHeight = v.height.toFloat()
+                imageView1.setOnTouchListener { v, event ->
+                    val viewWidth = v.width.toFloat()
+                    val viewHeight = v.height.toFloat()
 
-            val relativeX = event.x / viewWidth
-            val relativeY = event.y / viewHeight
+                    val relativeX = event.x / viewWidth
+                    val relativeY = event.y / viewHeight
 
-            val x = (relativeX * bitmap.width).toInt()
-            val y = (relativeY * bitmap.height).toInt()
+                    val x = (relativeX * bitmap.width).toInt()
+                    val y = (relativeY * bitmap.height).toInt()
 
-            if (x >= 0 && x < bitmap.width && y >= 0 && y < bitmap.height) {
-                val pixelColor = bitmap.getPixel(x, y)
-                val red = Color.red(pixelColor)
-                val green = Color.green(pixelColor)
-                val blue = Color.blue(pixelColor)
-                val hexCode = String.format("#%02X%02X%02X", red, green, blue)
+                    if (x >= 0 && x < bitmap.width && y >= 0 && y < bitmap.height) {
+                        val pixelColor = bitmap.getPixel(x, y)
+                        val red = Color.red(pixelColor)
+                        val green = Color.green(pixelColor)
+                        val blue = Color.blue(pixelColor)
+                        val hexCode = String.format("#%02X%02X%02X", red, green, blue)
 
-                textView10.text = "RGB: $red, $green, $blue"
-                textView11.text = "HEX: $hexCode"
+                        textView10.text = "RGB: $red, $green, $blue"
+                        textView11.text = "HEX: $hexCode"
 
-                frameLayout.setBackgroundColor(Color.rgb(red, green, blue))
+                        frameLayout.setBackgroundColor(Color.rgb(red, green, blue))
                     }
-            true
-                 }
+                    true
+                }
             }
         }
 
@@ -94,32 +104,39 @@ class ColorPicker : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         textView10.setOnClickListener{
             copyToClipboard("RGB", textView10.text.toString())
         }
+
         textView11.setOnClickListener{
             copyToClipboard("HEX", textView11.text.toString())
-            }
+        }
+
         uploadImage.setOnClickListener{
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             pickImageLauncher.launch(intent)
         }
+
         button7.setOnClickListener{
             startActivity(Intent(this, FavColor::class.java))
         }
+
         button8.setOnClickListener{
             startActivity(Intent(this, ColorLevel::class.java))
         }
+
         val menuImageView = findViewById<ImageView>(R.id.Menucolpick)
         menuImageView.setOnClickListener {
             val intent = Intent(this@ColorPicker, ConvertCode::class.java)
             startActivity(intent)
         }
     }
+
     private fun copyToClipboard(label: String, text: String) {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(label, text)
         clipboard.setPrimaryClip(clip)
         Toast.makeText(this, "$label copied to clipboard", Toast.LENGTH_SHORT).show()
-}
+    }
 }
