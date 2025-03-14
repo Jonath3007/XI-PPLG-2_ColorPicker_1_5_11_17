@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ class Login : AppCompatActivity() {
     private lateinit var continueButton: Button
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var resendVerificationText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,6 @@ class Login : AppCompatActivity() {
         passwordInput = findViewById(R.id.password)
         continueButton = findViewById(R.id.buttoncontinue)
 
-        // Jika pengguna sudah login sebelumnya, coba login otomatis
         val savedEmail = sharedPreferences.getString("email", "")
         val savedPassword = sharedPreferences.getString("password", "")
 
@@ -48,9 +49,6 @@ class Login : AppCompatActivity() {
             emailInput.setText(savedEmail)
             passwordInput.setText(savedPassword)
 
-            // Opsional: Login otomatis jika kredensial tersimpan
-            // Dikomentari karena mungkin lebih baik meminta user klik tombol login
-            // tryFirebaseLogin(savedEmail, savedPassword)
         }
 
         continueButton.setOnClickListener {
@@ -78,15 +76,19 @@ class Login : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val user = firebaseAuth.currentUser
                         if (user != null) {
-                            // Simpan data login
-                            saveLoginData(email, password)
+                            if (user.isEmailVerified) {
+                                saveLoginData(email, password)
 
-                            // Sinkronkan warna favorit
-                            syncFavColors(user.uid)
+                                syncFavColors(user.uid)
 
-                            showToast("Login Berhasil")
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
+                                showToast("Login Berhasil")
+                                startActivity(Intent(this, MainActivity::class.java))
+                                finish()
+                            } else {
+                                showToast("Silakan verifikasi email Anda terlebih dahulu")
+                                sendVerificationEmail()
+                                firebaseAuth.signOut()
+                            }
                         } else {
                             showToast("Gagal mendapatkan data pengguna")
                         }
@@ -104,6 +106,34 @@ class Login : AppCompatActivity() {
         }
     }
 
+    private fun sendVerificationEmail() {
+        val user = firebaseAuth.currentUser
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast("Email verifikasi telah dikirim ke alamat email Anda")
+                } else {
+                    showToast("Gagal mengirim email verifikasi: ${task.exception?.message}")
+                }
+            }
+    }
+
+    private fun sendVerificationEmail(email: String) {
+        firebaseAuth.fetchSignInMethodsForEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val signInMethods = task.result?.signInMethods
+                    if (!signInMethods.isNullOrEmpty()) {
+                        showToast("Silakan login terlebih dahulu untuk mengirim email verifikasi")
+                    } else {
+                        showToast("Email belum terdaftar")
+                    }
+                } else {
+                    showToast("Gagal memeriksa email: ${task.exception?.message}")
+                }
+            }
+    }
+
     private fun saveLoginData(email: String, password: String) {
         val editor = sharedPreferences.edit()
         editor.putString("email", email)
@@ -115,18 +145,15 @@ class Login : AppCompatActivity() {
     private fun syncFavColors(uid: String) {
         Log.d("Login", "Mulai sinkronisasi warna favorit untuk UID: $uid")
 
-        // Referensi ke userColors di Firebase
         val userColorsRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("userColors")
 
         userColorsRef.get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
                 try {
-                    // Dapatkan warna dari Firebase
                     val color1 = snapshot.child("color1").getValue(String::class.java) ?: "#000000"
                     val color2 = snapshot.child("color2").getValue(String::class.java) ?: "#000000"
                     val color3 = snapshot.child("color3").getValue(String::class.java) ?: "#000000"
 
-                    // Simpan ke SharedPreferences khusus untuk UID ini
                     val prefName = "ColorPrefs_$uid"
                     getSharedPreferences(prefName, MODE_PRIVATE).edit().apply {
                         putString("color1", color1)
@@ -136,7 +163,6 @@ class Login : AppCompatActivity() {
                         apply()
                     }
 
-                    // Juga simpan favcolor utama di UserPrefs
                     sharedPreferences.edit().putString("favcolor", color1).apply()
 
                     Log.d("Login", "Warna favorit berhasil disinkronkan: $color1, $color2, $color3")
@@ -144,10 +170,8 @@ class Login : AppCompatActivity() {
                     Log.e("Login", "Error memproses warna dari Firebase", e)
                 }
             } else {
-                // Jika tidak ada data warna, buat default
                 val defaultColors = listOf("#000000", "#FFFFFF", "#FF0000")
 
-                // Simpan warna default ke Firebase
                 val colorData = hashMapOf(
                     "color1" to defaultColors[0],
                     "color2" to defaultColors[1],
@@ -159,12 +183,10 @@ class Login : AppCompatActivity() {
                     .addOnSuccessListener {
                         Log.d("Login", "Warna default berhasil disimpan ke Firebase")
 
-                        // Juga simpan favcolor dalam user data
                         FirebaseDatabase.getInstance().getReference("users").child(uid)
                             .child("favcolor").setValue(defaultColors[0])
                     }
 
-                // Simpan warna default ke SharedPreferences
                 val prefName = "ColorPrefs_$uid"
                 getSharedPreferences(prefName, MODE_PRIVATE).edit().apply {
                     putString("color1", defaultColors[0])
@@ -174,7 +196,6 @@ class Login : AppCompatActivity() {
                     apply()
                 }
 
-                // Juga simpan favcolor utama di UserPrefs
                 sharedPreferences.edit().putString("favcolor", defaultColors[0]).apply()
 
                 Log.d("Login", "Tidak ada warna favorit ditemukan, menggunakan default")

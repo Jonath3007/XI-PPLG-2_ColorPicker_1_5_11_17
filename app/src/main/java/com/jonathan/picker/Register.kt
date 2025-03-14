@@ -59,7 +59,7 @@ class Register : AppCompatActivity() {
         val password = passwordInput.text.toString().trim()
 
         if (email.isEmpty() || password.isEmpty()) {
-            showToast("Silakan email dan password")
+            showToast("Silakan isi email dan password")
             return
         }
 
@@ -80,16 +80,35 @@ class Register : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    showToast("Registration Successful")
-                    startActivity(Intent(this, Login::class.java))
-                    finish()
+                    auth.currentUser?.sendEmailVerification()
+                        ?.addOnCompleteListener { verificationTask ->
+                            if (verificationTask.isSuccessful) {
+                                showToast("Registrasi berhasil. Silakan cek email Anda untuk verifikasi")
+                                startActivity(Intent(this, Login::class.java))
+                                finish()
+                            } else {
+                                showToast("Gagal mengirim email verifikasi: ${verificationTask.exception?.message}")
+                            }
+                        }
                 } else {
-                    showToast("Registration Failed: ${task.exception?.message}")
+                    showToast("Registrasi gagal: ${task.exception?.message}")
                 }
             }
     }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun resendVerificationEmail() {
+        val user = auth.currentUser
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast("Email verifikasi telah dikirim ulang")
+                } else {
+                    showToast("Gagal mengirim email verifikasi: ${task.exception?.message}")
+                }
+            }
     }
 }
